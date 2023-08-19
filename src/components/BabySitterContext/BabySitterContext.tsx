@@ -1,15 +1,39 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useState, useEffect} from "react";
+import { PlayerList } from "../../data/players";
 export interface BabySitterContextProviderProps {
-    children: React.ReactChild;
-    anyAdditionalFunctions: () => void | undefined;
+    children?: React.ReactChild;
+    anyAdditionalFunctions?: () => void | undefined;
 }
-interface BabySitterContextValue {
-
+type BabySitterPlayer = Record<string, boolean>;
+interface BabySitterContextValues {
+    players: BabySitterPlayer;
 };
 
-const BabySitterContext = createContext<BabySitterContextValue>({});
+const BabySitterContext = createContext<BabySitterContextValues>({players: {}});
 export const BabySitterContextProvider: React.FC<BabySitterContextProviderProps> = ({children, anyAdditionalFunctions}) => {
-    return (<BabySitterContext.Provider value={{}}>
+    const [playersAll, setActivePlayer] = useState({});
+    const [activePlayers, setListOfPlayers] = useState([]);
+
+    const buildInitialPlayers = () => {
+        let players:BabySitterPlayer = {};
+        PlayerList.forEach(player => {
+            const key = `${player}`;
+            players[key] = true;
+            
+        });
+        setActivePlayer(players)
+    };
+    
+    useEffect(() => {
+        buildInitialPlayers();
+    }, [])
+
+    /*
+    useEffect(() => {
+        console.log(playersAll);
+    }, [playersAll])*/
+
+    return (<BabySitterContext.Provider value={{players: playersAll}}>
         {children}
     </BabySitterContext.Provider>)
 }
@@ -18,4 +42,3 @@ export const useBabySitterContext = () => {
     const value = useContext(BabySitterContext);
     return value;
 }
-//export const BabySitterContext = () => {}
