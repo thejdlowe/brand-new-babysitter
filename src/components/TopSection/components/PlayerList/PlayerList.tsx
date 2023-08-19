@@ -1,27 +1,11 @@
 import React, { FC } from "react";
-import { FormGroup, FormControlLabel, Switch } from "@mui/material";
-import { useBabySitterContext } from "../BabySitterContext";
+import { Grid, FormControlLabel, Switch } from "@mui/material";
+import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const PlayerList: FC = () => {
 	const { players, updatePlayer } = useBabySitterContext();
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
-		/*
-		return (
-			<>
-				<label key={name}>
-					{name}{" "}
-					<input
-						type="checkbox"
-						checked={active}
-						onChange={() => {
-							updatePlayer(name);
-						}}
-					/>
-				</label>
-			</>
-		);
-        */
 		const switcher = (
 			<Switch
 				checked={active}
@@ -30,13 +14,13 @@ export const PlayerList: FC = () => {
 				}}
 			/>
 		);
-		return <FormControlLabel control={switcher} label={name} />;
+		return <Grid item xs={2}><FormControlLabel control={switcher} label={name} /></Grid>;
 	};
 	return (
-		<FormGroup>
+		<Grid container>
 			{playerNames.map((playerName) => {
 				return <>{buildPlayer(playerName, players[playerName])}</>;
 			})}
-		</FormGroup>
+		</Grid>
 	);
 };
