@@ -1,5 +1,10 @@
-import React, {FC} from 'react';
-import { BabySitterContextProvider } from '../BabySitterContext';
+import React, { FC } from "react";
+import { BabySitterContextProvider } from "../BabySitterContext";
+import { TopSection } from "../TopSection";
 export const BabySitter: FC = () => {
-    return (<BabySitterContextProvider>Fa2rt</BabySitterContextProvider>);
-}
+	return (
+		<BabySitterContextProvider>
+			<TopSection />
+		</BabySitterContextProvider>
+	);
+};
