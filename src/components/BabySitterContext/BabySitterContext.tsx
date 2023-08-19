@@ -8,17 +8,27 @@ type BabySitterPlayer = Record<string, boolean>;
 interface BabySitterContextValues {
 	players: BabySitterPlayer;
 	updatePlayer: (player: string) => void;
+	showLengthInMinutes: number;
+	setShowLength: (length: number) => void;
+	hasShowStarted: boolean;
+	setShowStarted: (started: boolean) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
 	players: {},
 	updatePlayer: () => {},
+	showLengthInMinutes: 20,
+	setShowLength: () => {},
+	hasShowStarted: false,
+	setShowStarted: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
 > = ({ children, anyAdditionalFunctions }) => {
 	const [playersAll, setActivePlayer] = useState({});
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
+	const [showLengthInMinutes, setShowLength] = useState<number>(20);
+	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
 
 	const updatePlayer = (playerName: string) => {
 		const temp: BabySitterPlayer = playersAll;
@@ -48,11 +58,20 @@ export const BabySitterContextProvider: React.FC<
 	}, [playersAll]);
 
 	useEffect(() => {
-		console.log(activePlayers);
-	}, [activePlayers]);
+		console.log(activePlayers, showLengthInMinutes);
+	}, [activePlayers, showLengthInMinutes]);
 
 	return (
-		<BabySitterContext.Provider value={{ players: playersAll, updatePlayer }}>
+		<BabySitterContext.Provider
+			value={{
+				players: playersAll,
+				updatePlayer,
+				showLengthInMinutes,
+				setShowLength,
+				hasShowStarted,
+				setShowStarted,
+			}}
+		>
 			{children}
 		</BabySitterContext.Provider>
 	);

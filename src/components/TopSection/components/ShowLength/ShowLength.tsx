@@ -1,6 +1,24 @@
 import React, { FC } from "react";
-import { Typography } from "@mui/material";
+import { Slider, Typography } from "@mui/material";
+import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const ShowLength: FC = () => {
-    return (<Typography variant="h4">Babysitter 2.0</Typography>)
-}
+	const { showLengthInMinutes, setShowLength } = useBabySitterContext();
+	const handleChange = (event: Event, newValue: number | number[]) => {
+		setShowLength(newValue as number);
+	};
+	return (
+		<>
+			<Typography variant="h6">Show Length</Typography>
+			<Slider
+				onChange={handleChange}
+				marks
+				min={1}
+				max={60}
+				step={1}
+				value={showLengthInMinutes}
+				valueLabelDisplay="auto"
+			/>
+		</>
+	);
+};
