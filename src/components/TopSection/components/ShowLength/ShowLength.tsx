@@ -3,7 +3,7 @@ import { Slider, Typography } from "@mui/material";
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const ShowLength: FC = () => {
-	const { showLengthInMinutes, setShowLength } = useBabySitterContext();
+	const { showLengthInMinutes, setShowLength, hasShowStarted } = useBabySitterContext();
 	const handleChange = (event: Event, newValue: number | number[]) => {
 		setShowLength(newValue as number);
 	};
@@ -18,6 +18,7 @@ export const ShowLength: FC = () => {
 				step={1}
 				value={showLengthInMinutes}
 				valueLabelDisplay="auto"
+                disabled={hasShowStarted}
 			/>
 		</>
 	);

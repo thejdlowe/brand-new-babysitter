@@ -3,7 +3,7 @@ import { Grid, FormControlLabel, Switch } from "@mui/material";
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const PlayerList: FC = () => {
-	const { players, updatePlayer } = useBabySitterContext();
+	const { players, updatePlayer, hasShowStarted } = useBabySitterContext();
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
 		const switcher = (
@@ -12,6 +12,7 @@ export const PlayerList: FC = () => {
 				onChange={() => {
 					updatePlayer(name);
 				}}
+				disabled={hasShowStarted}
 			/>
 		);
 		return <Grid item xs={2}><FormControlLabel control={switcher} label={name} /></Grid>;

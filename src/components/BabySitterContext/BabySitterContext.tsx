@@ -11,7 +11,7 @@ interface BabySitterContextValues {
 	showLengthInMinutes: number;
 	setShowLength: (length: number) => void;
 	hasShowStarted: boolean;
-	setShowStarted: (started: boolean) => void;
+	setShowStarted: () => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -29,6 +29,10 @@ export const BabySitterContextProvider: React.FC<
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
 	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
+
+	const setHasShowStarted = () => {
+		setShowStarted(prevValue => (!prevValue));
+	}
 
 	const updatePlayer = (playerName: string) => {
 		const temp: BabySitterPlayer = playersAll;
@@ -58,8 +62,8 @@ export const BabySitterContextProvider: React.FC<
 	}, [playersAll]);
 
 	useEffect(() => {
-		console.log(activePlayers, showLengthInMinutes);
-	}, [activePlayers, showLengthInMinutes]);
+		console.log({activePlayers, showLengthInMinutes, hasShowStarted});
+	}, [activePlayers, showLengthInMinutes, hasShowStarted]);
 
 	return (
 		<BabySitterContext.Provider
@@ -69,7 +73,7 @@ export const BabySitterContextProvider: React.FC<
 				showLengthInMinutes,
 				setShowLength,
 				hasShowStarted,
-				setShowStarted,
+				setShowStarted: setHasShowStarted,
 			}}
 		>
 			{children}
