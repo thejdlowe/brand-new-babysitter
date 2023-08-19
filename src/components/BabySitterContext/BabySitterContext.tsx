@@ -48,7 +48,7 @@ export const BabySitterContextProvider: React.FC<
 	}, [playersAll]);
 
 	useEffect(() => {
-		//console.log(activePlayers);
+		console.log(activePlayers);
 	}, [activePlayers]);
 
 	return (
