@@ -1,10 +1,12 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { BabySitterContextProvider } from "../BabySitterContext";
-import { TopSection } from "../TopSection";
+import { TabSection } from "../TabSection";
+import { Body } from "../Body";
 export const BabySitter: FC = () => {
 	return (
 		<BabySitterContextProvider>
-			<TopSection />
+			<TabSection />
+			<Body />
 		</BabySitterContextProvider>
 	);
 };

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { playersList } from "../../data/players";
 export interface BabySitterContextProviderProps {
-	children?: React.ReactChild;
+	children?: React.ReactChild | React.ReactChild[];
 	anyAdditionalFunctions?: () => void | undefined;
 }
 type BabySitterPlayer = Record<string, boolean>;
@@ -12,6 +12,8 @@ interface BabySitterContextValues {
 	setShowLength: (length: number) => void;
 	hasShowStarted: boolean;
 	setShowStarted: () => void;
+	currentTab: number;
+	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -21,6 +23,8 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	setShowLength: () => {},
 	hasShowStarted: false,
 	setShowStarted: () => {},
+	currentTab: 0,
+	handleTabChange: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -29,10 +33,16 @@ export const BabySitterContextProvider: React.FC<
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
 	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
+	const [currentTab, setCurrentTab] = useState<number>(0);
+
+	const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+		console.log("Tab changed");
+		setCurrentTab(newValue);
+	};
 
 	const setHasShowStarted = () => {
-		setShowStarted(prevValue => (!prevValue));
-	}
+		setShowStarted((prevValue) => !prevValue);
+	};
 
 	const updatePlayer = (playerName: string) => {
 		const temp: BabySitterPlayer = playersAll;
@@ -62,7 +72,7 @@ export const BabySitterContextProvider: React.FC<
 	}, [playersAll]);
 
 	useEffect(() => {
-		console.log({activePlayers, showLengthInMinutes, hasShowStarted});
+		console.log({ activePlayers, showLengthInMinutes, hasShowStarted });
 	}, [activePlayers, showLengthInMinutes, hasShowStarted]);
 
 	return (
@@ -74,6 +84,8 @@ export const BabySitterContextProvider: React.FC<
 				setShowLength,
 				hasShowStarted,
 				setShowStarted: setHasShowStarted,
+				currentTab,
+				handleTabChange,
 			}}
 		>
 			{children}
