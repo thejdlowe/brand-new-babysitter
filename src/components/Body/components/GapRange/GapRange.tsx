@@ -7,7 +7,7 @@ export const GapRange: FC = () => {
 	return (
 		<>
 			<Typography variant="h6">Gap Range</Typography>
-			<Box sx={{ width: "80%", margin: "auto" }}>
+			
 				<Slider
 					onChange={handleGapRangeChange}
 					marks
@@ -17,7 +17,6 @@ export const GapRange: FC = () => {
 					value={gapRanges}
 					valueLabelDisplay="auto"
 				/>
-			</Box>
 		</>
 	);
 };
