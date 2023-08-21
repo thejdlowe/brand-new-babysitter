@@ -1,10 +1,11 @@
 export const playersList: string[] = [
+	"Alex",
 	"Barack",
-	"Bethany",
-	"Bridjet",
-	"Bronwyn",
-	"J.D.",
-	"James",
-	"Jennifer",
-	"Marisa",
+	"Heather",
+	"Jaclyn",
+	"Karen",
+	"Michaela",
+	"Peter",
+	"Sarah",
+	"Tristan",
 ];
