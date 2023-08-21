@@ -6,7 +6,7 @@ export const GapRange: FC = () => {
 	const { gapRanges, handleGapRangeChange } = useBabySitterContext();
 	return (
 		<>
-			<Typography variant="h6">Gap Range</Typography>
+			<Typography variant="h6">Gap Range (in seconds)</Typography>
 			
 				<Slider
 					onChange={handleGapRangeChange}
