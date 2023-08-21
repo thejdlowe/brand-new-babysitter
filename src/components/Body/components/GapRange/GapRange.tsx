@@ -1,6 +1,23 @@
 import React, { FC } from "react";
-import { Typography } from "@mui/material";
+import { Box, Slider, Typography } from "@mui/material";
+import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const GapRange: FC = () => {
-    return (<Typography variant="h4">Babysitter 2.0</Typography>)
-}
+	const { gapRanges, handleGapRangeChange } = useBabySitterContext();
+	return (
+		<>
+			<Typography variant="h6">Gap Range</Typography>
+			<Box sx={{ width: "80%", margin: "auto" }}>
+				<Slider
+					onChange={handleGapRangeChange}
+					marks
+					min={15}
+					max={180}
+					step={1}
+					value={gapRanges}
+					valueLabelDisplay="auto"
+				/>
+			</Box>
+		</>
+	);
+};

@@ -10,5 +10,5 @@ export const componentsAndTitles: Record<string, FC> = {
 	Players: PlayerList,
 	"Show Length": ShowLength,
 	"Gap Between Gets": GapRange,
-	"Audience Participation": AudienceParticipation,
+	//"Audience Participation": AudienceParticipation,
 };

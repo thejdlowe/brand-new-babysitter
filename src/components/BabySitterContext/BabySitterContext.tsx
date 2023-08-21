@@ -14,6 +14,8 @@ interface BabySitterContextValues {
 	setShowStarted: () => void;
 	currentTab: number;
 	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
+	gapRanges: number[];
+	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -25,6 +27,8 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	setShowStarted: () => {},
 	currentTab: 0,
 	handleTabChange: () => {},
+	gapRanges: [30, 120],
+	handleGapRangeChange: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -34,10 +38,20 @@ export const BabySitterContextProvider: React.FC<
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
 	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
 	const [currentTab, setCurrentTab] = useState<number>(0);
+	const [logs, setLogs] = useState<string[]>([]);
+	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
+
+	const addToLog = (str: string) => {
+		const newLog = `: ${str}`;
+		setLogs((prevLogs) => [...prevLogs, newLog]);
+	};
 
 	const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-		console.log("Tab changed");
 		setCurrentTab(newValue);
+	};
+
+	const handleGapRangeChange = (event: Event, newValue: number | number[]) => {
+		setGapRanges(newValue as number[]);
 	};
 
 	const setHasShowStarted = () => {
@@ -86,6 +100,8 @@ export const BabySitterContextProvider: React.FC<
 				setShowStarted: setHasShowStarted,
 				currentTab,
 				handleTabChange,
+				gapRanges,
+				handleGapRangeChange,
 			}}
 		>
 			{children}
