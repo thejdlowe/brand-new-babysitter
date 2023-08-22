@@ -7,28 +7,30 @@ export interface BabySitterContextProviderProps {
 type BabySitterPlayer = Record<string, boolean>;
 interface BabySitterContextValues {
 	players: BabySitterPlayer;
-	updatePlayer: (player: string) => void;
 	showLengthInMinutes: number;
-	setShowLength: (length: number) => void;
 	hasShowStarted: boolean;
-	setShowStarted: () => void;
 	currentTab: number;
-	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 	gapRanges: number[];
+	updatePlayer: (player: string) => void;
+	setShowLength: (length: number) => void;
+	setShowStarted: () => void;
+	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
+	deletePlayer: (player?: string) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
 	players: {},
-	updatePlayer: () => {},
 	showLengthInMinutes: 20,
-	setShowLength: () => {},
 	hasShowStarted: false,
-	setShowStarted: () => {},
 	currentTab: 0,
-	handleTabChange: () => {},
 	gapRanges: [30, 120],
+	updatePlayer: () => {},
+	setShowLength: () => {},
+	setShowStarted: () => {},
+	handleTabChange: () => {},
 	handleGapRangeChange: () => {},
+	deletePlayer: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -40,6 +42,8 @@ export const BabySitterContextProvider: React.FC<
 	const [currentTab, setCurrentTab] = useState<number>(0);
 	const [logs, setLogs] = useState<string[]>([]);
 	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
+
+	const deletePlayer = (player?: string) => {};
 
 	const addToLog = (str: string) => {
 		const newLog = `: ${str}`;
@@ -93,15 +97,16 @@ export const BabySitterContextProvider: React.FC<
 		<BabySitterContext.Provider
 			value={{
 				players: playersAll,
-				updatePlayer,
 				showLengthInMinutes,
-				setShowLength,
 				hasShowStarted,
-				setShowStarted: setHasShowStarted,
 				currentTab,
-				handleTabChange,
 				gapRanges,
+				updatePlayer,
+				setShowLength,
+				setShowStarted: setHasShowStarted,
+				handleTabChange,
 				handleGapRangeChange,
+				deletePlayer,
 			}}
 		>
 			{children}
