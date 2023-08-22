@@ -5,7 +5,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const PlayerList: FC = () => {
-	const { players, updatePlayer, hasShowStarted, deletePlayer } = useBabySitterContext();
+	const { players, updatePlayer, hasShowStarted, deletePlayer } =
+		useBabySitterContext();
+	const [showAlert, setShowAlert] = useState(false);
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
 		const switcher = (
