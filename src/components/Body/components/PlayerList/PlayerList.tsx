@@ -40,7 +40,9 @@ export const PlayerList: FC = () => {
 						</>
 					}
 				/>
-				<IconButton className="hidden-button">
+				<IconButton onClick={() => {
+					deletePlayer(name);
+				}} className="hidden-button">
 					<DeleteIcon />
 				</IconButton>
 			</Grid>
@@ -53,7 +55,9 @@ export const PlayerList: FC = () => {
 			})}
 			<Grid item xs={3}>
 				Delete All Players
-				<IconButton className="hidden-button">
+				<IconButton onClick={() => {
+					deletePlayer();
+				}}  className="hidden-button">
 					<DeleteIcon />
 				</IconButton>
 			</Grid>

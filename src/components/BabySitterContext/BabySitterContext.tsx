@@ -43,7 +43,22 @@ export const BabySitterContextProvider: React.FC<
 	const [logs, setLogs] = useState<string[]>([]);
 	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
 
-	const deletePlayer = (player?: string) => {};
+	const deletePlayer = (player?: string) => {
+		if(player) {
+			setActivePlayer(prevState => {
+				const state:BabySitterPlayer = {...prevState};
+				delete state[`${player}`];
+				return state;
+			});
+		}
+		else {
+			setActivePlayer(prevState => {
+				const state:BabySitterPlayer = {};
+				
+				return state;
+			});
+		}
+	};
 
 	const addToLog = (str: string) => {
 		const newLog = `: ${str}`;
