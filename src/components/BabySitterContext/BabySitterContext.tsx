@@ -18,6 +18,7 @@ interface BabySitterContextValues {
 	currentTab: number;
 	gapRanges: number[];
 	updatePlayer: (player: string) => void;
+	addPlayer: (player: string) => void;
 	setShowLength: (length: number) => void;
 	setShowStarted: () => void;
 	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
@@ -33,6 +34,7 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	currentTab: 0,
 	gapRanges: [30, 120],
 	updatePlayer: () => {},
+	addPlayer: () => {},
 	setShowLength: () => {},
 	setShowStarted: () => {},
 	handleTabChange: () => {},
@@ -50,20 +52,36 @@ export const BabySitterContextProvider: React.FC<
 	const [currentTab, setCurrentTab] = useState<number>(0);
 	const [logs, setLogs] = useState<string[]>([]);
 	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
-	const [showAlert, setShowAlert] = useState<boolean>(false);
+
+	const [showPopup, setShowPopup] = useState<boolean>(false);
 	const [alertMsg, setAlertMsg] = useState<string>("");
 	const [alertFunc, setAlertFunc] = useState<() => void>(() => {});
+	const [promptText, setPromptText] = useState<string>("");
+
+	const [popupType, setPopupType] = useState<
+		"confirm" | "prompt" | undefined
+	>();
 
 	const confirm = (msg: string, func: () => void) => {
+		setPopupType("confirm");
 		setAlertMsg(msg);
 		setAlertFunc(() => func);
-		setShowAlert(true);
+		setShowPopup(true);
 	};
 
 	const closeConfirm = () => {
+		setPopupType(undefined);
 		setAlertMsg("");
-		setAlertFunc(() => {});
-		setShowAlert(false);
+		setAlertFunc(() => () => {});
+		setShowPopup(false);
+	};
+
+	const addPlayer = (player: string) => {
+		setActivePlayer((prevState) => {
+			const state: BabySitterPlayer = { ...prevState };
+			state[`${player}`] = true;
+			return state;
+		});
 	};
 
 	const deletePlayer = (player?: string) => {
@@ -76,7 +94,6 @@ export const BabySitterContextProvider: React.FC<
 		} else {
 			setActivePlayer((prevState) => {
 				const state: BabySitterPlayer = {};
-
 				return state;
 			});
 		}
@@ -139,6 +156,7 @@ export const BabySitterContextProvider: React.FC<
 				currentTab,
 				gapRanges,
 				updatePlayer,
+				addPlayer,
 				setShowLength,
 				setShowStarted: setHasShowStarted,
 				handleTabChange,
@@ -149,7 +167,7 @@ export const BabySitterContextProvider: React.FC<
 		>
 			{children}
 			<Dialog
-				open={showAlert}
+				open={showPopup}
 				onClose={closeConfirm}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"

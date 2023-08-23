@@ -6,8 +6,14 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const PlayerList: FC = () => {
-	const { players, updatePlayer, hasShowStarted, deletePlayer, confirm } =
-		useBabySitterContext();
+	const {
+		players,
+		updatePlayer,
+		hasShowStarted,
+		addPlayer,
+		deletePlayer,
+		confirm,
+	} = useBabySitterContext();
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
 		const switcher = (
@@ -76,7 +82,12 @@ export const PlayerList: FC = () => {
 			</Grid>
 			<Grid item xs={3}>
 				Add New Player
-				<IconButton onClick={() => {}}>
+				<IconButton
+					onClick={() => {
+						const player = window.prompt("Please add a player") as string;
+						addPlayer(player);
+					}}
+				>
 					<AddCircleIcon />
 				</IconButton>
 			</Grid>
