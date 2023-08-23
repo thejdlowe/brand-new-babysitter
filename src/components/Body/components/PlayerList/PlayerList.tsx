@@ -1,14 +1,13 @@
 import React, { FC, useState } from "react";
 import { Grid, FormControlLabel, Switch, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const PlayerList: FC = () => {
-	const { players, updatePlayer, hasShowStarted, deletePlayer } =
+	const { players, updatePlayer, hasShowStarted, deletePlayer, confirm } =
 		useBabySitterContext();
-	const [showAlert, setShowAlert] = useState(false);
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
 		const switcher = (
@@ -43,9 +42,13 @@ export const PlayerList: FC = () => {
 						</>
 					}
 				/>
-				<IconButton onClick={() => {
-					deletePlayer(name);
-				}}>
+				<IconButton
+					onClick={() => {
+						confirm(`Are you sure you want to delete ${name}?`, () => {
+							deletePlayer(name);
+						});
+					}}
+				>
 					<DeleteIcon />
 				</IconButton>
 			</Grid>
@@ -53,26 +56,27 @@ export const PlayerList: FC = () => {
 	};
 	return (
 		<>
-		<Grid container>
-			{playerNames.map((playerName) => {
-				return <>{buildPlayer(playerName, players[playerName])}</>;
-			})}
-			
-		</Grid>
+			<Grid container>
+				{playerNames.map((playerName) => {
+					return <>{buildPlayer(playerName, players[playerName])}</>;
+				})}
+			</Grid>
 
-		<Grid item xs={3}>
+			<Grid item xs={3}>
 				Delete All Players
-				<IconButton onClick={() => {
-					deletePlayer();
-				}}>
+				<IconButton
+					onClick={() => {
+						confirm(`Are you sure you want to delete all players?`, () => {
+							deletePlayer();
+						});
+					}}
+				>
 					<DeleteIcon />
 				</IconButton>
 			</Grid>
 			<Grid item xs={3}>
 				Add New Player
-				<IconButton onClick={() => {
-					
-				}}>
+				<IconButton onClick={() => {}}>
 					<AddCircleIcon />
 				</IconButton>
 			</Grid>

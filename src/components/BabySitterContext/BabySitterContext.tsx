@@ -1,5 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { playersList } from "../../data/players";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import Button from "@mui/material/Button";
+
 export interface BabySitterContextProviderProps {
 	children?: React.ReactChild | React.ReactChild[];
 	anyAdditionalFunctions?: () => void | undefined;
@@ -17,6 +23,7 @@ interface BabySitterContextValues {
 	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
 	deletePlayer: (player?: string) => void;
+	confirm: (msg: string, func: () => void) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -31,6 +38,7 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	handleTabChange: () => {},
 	handleGapRangeChange: () => {},
 	deletePlayer: () => {},
+	confirm: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -42,19 +50,33 @@ export const BabySitterContextProvider: React.FC<
 	const [currentTab, setCurrentTab] = useState<number>(0);
 	const [logs, setLogs] = useState<string[]>([]);
 	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
+	const [showAlert, setShowAlert] = useState<boolean>(false);
+	const [alertMsg, setAlertMsg] = useState<string>("");
+	const [alertFunc, setAlertFunc] = useState<() => void>(() => {});
+
+	const confirm = (msg: string, func: () => void) => {
+		setAlertMsg(msg);
+		setAlertFunc(() => func);
+		setShowAlert(true);
+	};
+
+	const closeConfirm = () => {
+		setAlertMsg("");
+		setAlertFunc(() => {});
+		setShowAlert(false);
+	};
 
 	const deletePlayer = (player?: string) => {
-		if(player) {
-			setActivePlayer(prevState => {
-				const state:BabySitterPlayer = {...prevState};
+		if (player) {
+			setActivePlayer((prevState) => {
+				const state: BabySitterPlayer = { ...prevState };
 				delete state[`${player}`];
 				return state;
 			});
-		}
-		else {
-			setActivePlayer(prevState => {
-				const state:BabySitterPlayer = {};
-				
+		} else {
+			setActivePlayer((prevState) => {
+				const state: BabySitterPlayer = {};
+
 				return state;
 			});
 		}
@@ -122,9 +144,35 @@ export const BabySitterContextProvider: React.FC<
 				handleTabChange,
 				handleGapRangeChange,
 				deletePlayer,
+				confirm,
 			}}
 		>
 			{children}
+			<Dialog
+				open={showAlert}
+				onClose={closeConfirm}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						{alertMsg}
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={closeConfirm}>Nope</Button>
+					<Button
+						variant="contained"
+						onClick={() => {
+							alertFunc();
+							closeConfirm();
+						}}
+						autoFocus
+					>
+						Yep
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</BabySitterContext.Provider>
 	);
 };
