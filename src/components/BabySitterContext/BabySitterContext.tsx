@@ -9,6 +9,7 @@ import React, {
 import { BabySitterLogic } from "../../logic";
 import { playersList } from "../../data/players";
 import { Credits } from "../Credits";
+import { ShowTimeContextProvider } from "../ShowTimeContext";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -16,12 +17,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 
 export interface BabySitterContextProviderProps {
-	children?: React.ReactChild | React.ReactChild[];
+	children?: React.ReactNode | React.ReactNode[];
 	anyAdditionalFunctions?: () => void | undefined;
 }
 type BabySitterPlayer = Record<string, boolean>;
 interface BabySitterContextValues {
 	players: BabySitterPlayer;
+	activePlayers: string[];
 	showLengthInMinutes: number;
 	hasShowStarted: boolean;
 	currentTab: number;
@@ -34,12 +36,11 @@ interface BabySitterContextValues {
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
 	deletePlayer: (player?: string) => void;
 	confirm: (msg: string, func: () => void) => void;
-	StartTheShow: () => void;
-	EndTheShow: () => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
 	players: {},
+	activePlayers: [],
 	showLengthInMinutes: 20,
 	hasShowStarted: false,
 	currentTab: 0,
@@ -52,8 +53,6 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	handleGapRangeChange: () => {},
 	deletePlayer: () => {},
 	confirm: () => {},
-	StartTheShow: () => {},
-	EndTheShow: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -61,6 +60,7 @@ export const BabySitterContextProvider: React.FC<
 	const [playersAll, setActivePlayer] = useState({});
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
+
 	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
 	const [currentTab, setCurrentTab] = useState<number>(0);
 	const [logs, setLogs] = useState<string[]>([]);
@@ -69,7 +69,6 @@ export const BabySitterContextProvider: React.FC<
 	const [showPopup, setShowPopup] = useState<boolean>(false);
 	const [alertMsg, setAlertMsg] = useState<string>("");
 	const [alertFunc, setAlertFunc] = useState<() => void>(() => {});
-	const [promptText, setPromptText] = useState<string>("");
 
 	const [popupType, setPopupType] = useState<
 		"confirm" | "prompt" | undefined
@@ -126,6 +125,7 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	const setHasShowStarted = () => {
+		console.log("Success?", hasShowStarted);
 		setShowStarted((prevValue) => !prevValue);
 	};
 
@@ -162,7 +162,7 @@ export const BabySitterContextProvider: React.FC<
 		setListOfPlayers(allActivePlayers);
 	}, [playersAll]);
 
-	const { StartTheShow, EndTheShow } = useMemo(() => {
+	/*const { StartTheShow, EndTheShow } = useMemo(() => {
 		return BabySitterLogic({
 			activePlayers,
 			showLengthInMinutes,
@@ -170,9 +170,10 @@ export const BabySitterContextProvider: React.FC<
 			setHasShowStarted,
 		});
 	}, [activePlayers, showLengthInMinutes, gapRanges, setHasShowStarted]);
-
+*/
 	const everythingObject = {
 		players: playersAll,
+		activePlayers,
 		showLengthInMinutes,
 		hasShowStarted,
 		currentTab,
@@ -185,39 +186,44 @@ export const BabySitterContextProvider: React.FC<
 		handleGapRangeChange,
 		deletePlayer,
 		confirm,
-		StartTheShow,
-		EndTheShow,
+	};
+
+	const ShowTimeProps = {
+		activePlayers,
+		hasShowStarted,
 	};
 
 	return (
 		<BabySitterContext.Provider value={everythingObject}>
-			{children}
-			<Credits />
-			<Dialog
-				open={showPopup}
-				onClose={closeConfirm}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						{alertMsg}
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={closeConfirm}>Nope</Button>
-					<Button
-						variant="contained"
-						onClick={() => {
-							alertFunc();
-							closeConfirm();
-						}}
-						autoFocus
-					>
-						Yep
-					</Button>
-				</DialogActions>
-			</Dialog>
+			<ShowTimeContextProvider {...ShowTimeProps}>
+				{children}
+				<Credits />
+				<Dialog
+					open={showPopup}
+					onClose={closeConfirm}
+					aria-labelledby="alert-dialog-title"
+					aria-describedby="alert-dialog-description"
+				>
+					<DialogContent>
+						<DialogContentText id="alert-dialog-description">
+							{alertMsg}
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={closeConfirm}>Nope</Button>
+						<Button
+							variant="contained"
+							onClick={() => {
+								alertFunc();
+								closeConfirm();
+							}}
+							autoFocus
+						>
+							Yep
+						</Button>
+					</DialogActions>
+				</Dialog>
+			</ShowTimeContextProvider>
 		</BabySitterContext.Provider>
 	);
 };

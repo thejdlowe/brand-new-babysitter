@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { Button } from "@mui/material";
-import { useBabySitterContext } from "../../../BabySitterContext";
+import { useShowTimeContext } from "../../../ShowTimeContext";
 
 export const ShowRunningButton: FC = () => {
-	const { EndTheShow } = useBabySitterContext();
+	const { EndTheShow } = useShowTimeContext();
 	return (
 		<Button onClick={EndTheShow} variant="contained">
 			End Show Early

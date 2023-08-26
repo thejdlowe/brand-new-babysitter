@@ -1,5 +1,6 @@
-let overallShowTimer = -1;
-let individualTimer = -1;
+import React, { useState, useCallback } from "react";
+import { useBabySitterContext } from "../components";
+
 let timerHandle: any;
 
 interface BabySitterLogicProps {
@@ -8,20 +9,6 @@ interface BabySitterLogicProps {
 	gapRanges: number[];
 	setHasShowStarted: () => void;
 }
-
-//from https://stackoverflow.com/questions/31337370/how-to-convert-seconds-to-hhmmss-in-moment-js
-const pad = (num: number) => {
-	return ("0" + num).slice(-2);
-};
-const hhmmss = (secs: number) => {
-	if (secs === Infinity) return `∞∞:∞∞`;
-	var minutes = Math.floor(secs / 60);
-	secs = secs % 60;
-	var hours = Math.floor(minutes / 60);
-	minutes = minutes % 60;
-	return `${pad(minutes)}:${pad(secs)}`;
-	// return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
-};
 
 //from https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
 const randomIntFromInterval = (gapRanges: number[]) => {
@@ -35,45 +22,52 @@ const getRandomFromArr = (arr: any[]) => {
 	return arr[Math.floor(Math.random() * arr.length)];
 };
 
+/*
+activePlayers,
+			showLengthInMinutes,
+			gapRanges,
+			setHasShowStarted,
+*/
+
 export const BabySitterLogic = ({
 	activePlayers,
 	showLengthInMinutes,
 	gapRanges,
 	setHasShowStarted,
 }: BabySitterLogicProps) => {
-	const StartTheShow = () => {
-		console.log("Fart", {
-			activePlayers,
-			showLengthInMinutes,
-			gapRanges,
-			setHasShowStarted,
-		});
+	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
+	const [individualTimer, setIndividualTimer] = useState<number>(-1);
+	const StartTheShow = useCallback(() => {
 		setHasShowStarted();
-		overallShowTimer = showLengthInMinutes * 60;
-		individualTimer = randomIntFromInterval(gapRanges);
+		setOverallShowTimer(showLengthInMinutes * 60);
+		setIndividualTimer(randomIntFromInterval(gapRanges));
 		timerHandle = setInterval(RunTheShow, 1000);
-	};
+	}, []);
 
-	const RunTheShow = () => {
-		overallShowTimer--;
-		individualTimer--;
+	const RunTheShow = useCallback(() => {
+		console.log(overallShowTimer);
+		setOverallShowTimer((prev) => --prev);
+		setIndividualTimer((prev) => --prev);
+		/*console.log({ overallShowTimer: getOverallShowTimer() });
+		if (getOverallShowTimer() <= 0) {
+			return EndTheShow();
+		}
+        */
 		if (overallShowTimer <= 0) {
 			return EndTheShow();
 		}
-	};
+	}, []);
 
-	const EndTheShow = () => {
+	const EndTheShow = useCallback(() => {
 		clearInterval(timerHandle);
-		overallShowTimer = -1;
-		individualTimer = -1;
+		setOverallShowTimer(-1);
+		setIndividualTimer(-1);
 		setHasShowStarted();
-	};
+	}, []);
 
 	return {
 		StartTheShow,
 		RunTheShow,
 		EndTheShow,
-		overallShowTimer,
-		individualTimer,
 	};
 };
