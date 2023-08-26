@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+	createContext,
+	useContext,
+	useState,
+	useEffect,
+	useCallback,
+	useMemo,
+} from "react";
+import { BabySitterLogic } from "../../logic";
 import { playersList } from "../../data/players";
+import { Credits } from "../Credits";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,6 +34,8 @@ interface BabySitterContextValues {
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
 	deletePlayer: (player?: string) => void;
 	confirm: (msg: string, func: () => void) => void;
+	StartTheShow: () => void;
+	EndTheShow: () => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -41,6 +52,8 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	handleGapRangeChange: () => {},
 	deletePlayer: () => {},
 	confirm: () => {},
+	StartTheShow: () => {},
+	EndTheShow: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -132,6 +145,12 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	useEffect(() => {
+		if (hasShowStarted === true) {
+			console.log("Yes");
+		}
+	}, [hasShowStarted]);
+
+	useEffect(() => {
 		buildInitialPlayers();
 	}, []);
 
@@ -143,29 +162,37 @@ export const BabySitterContextProvider: React.FC<
 		setListOfPlayers(allActivePlayers);
 	}, [playersAll]);
 
-	useEffect(() => {
-		console.log({ activePlayers, showLengthInMinutes, hasShowStarted });
-	}, [activePlayers, showLengthInMinutes, hasShowStarted]);
+	const { StartTheShow, EndTheShow } = useMemo(() => {
+		return BabySitterLogic({
+			activePlayers,
+			showLengthInMinutes,
+			gapRanges,
+			setHasShowStarted,
+		});
+	}, [activePlayers, showLengthInMinutes, gapRanges, setHasShowStarted]);
+
+	const everythingObject = {
+		players: playersAll,
+		showLengthInMinutes,
+		hasShowStarted,
+		currentTab,
+		gapRanges,
+		updatePlayer,
+		addPlayer,
+		setShowLength,
+		setShowStarted: setHasShowStarted,
+		handleTabChange,
+		handleGapRangeChange,
+		deletePlayer,
+		confirm,
+		StartTheShow,
+		EndTheShow,
+	};
 
 	return (
-		<BabySitterContext.Provider
-			value={{
-				players: playersAll,
-				showLengthInMinutes,
-				hasShowStarted,
-				currentTab,
-				gapRanges,
-				updatePlayer,
-				addPlayer,
-				setShowLength,
-				setShowStarted: setHasShowStarted,
-				handleTabChange,
-				handleGapRangeChange,
-				deletePlayer,
-				confirm,
-			}}
-		>
+		<BabySitterContext.Provider value={everythingObject}>
 			{children}
+			<Credits />
 			<Dialog
 				open={showPopup}
 				onClose={closeConfirm}
