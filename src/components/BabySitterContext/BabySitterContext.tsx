@@ -1,12 +1,4 @@
-import React, {
-	createContext,
-	useContext,
-	useState,
-	useEffect,
-	useCallback,
-	useMemo,
-} from "react";
-import { BabySitterLogic } from "../../logic";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { playersList } from "../../data/players";
 import { Credits } from "../Credits";
 import { ShowTimeContextProvider } from "../ShowTimeContext";
@@ -144,11 +136,12 @@ export const BabySitterContextProvider: React.FC<
 		setActivePlayer(players);
 	};
 
+	/*
 	useEffect(() => {
 		if (hasShowStarted === true) {
 			console.log("Yes");
 		}
-	}, [hasShowStarted]);
+	}, [hasShowStarted]);*/
 
 	useEffect(() => {
 		buildInitialPlayers();
@@ -162,15 +155,6 @@ export const BabySitterContextProvider: React.FC<
 		setListOfPlayers(allActivePlayers);
 	}, [playersAll]);
 
-	/*const { StartTheShow, EndTheShow } = useMemo(() => {
-		return BabySitterLogic({
-			activePlayers,
-			showLengthInMinutes,
-			gapRanges,
-			setHasShowStarted,
-		});
-	}, [activePlayers, showLengthInMinutes, gapRanges, setHasShowStarted]);
-*/
 	const everythingObject = {
 		players: playersAll,
 		activePlayers,

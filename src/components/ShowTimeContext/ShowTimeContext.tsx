@@ -4,7 +4,6 @@ import React, {
 	useState,
 	useEffect,
 	useCallback,
-	useMemo,
 	useRef,
 } from "react";
 import { useBabySitterContext } from "../BabySitterContext";
@@ -46,6 +45,9 @@ const ShowTimeContext = createContext<ShowTimeContextValues>({
 	overallShowTimer: -1,
 });
 
+// @ts-ignore
+const RV = window.responsiveVoice;
+
 export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
 > = ({
@@ -64,13 +66,17 @@ export const ShowTimeContextProvider: React.FC<
 		if (!localHasShowStart) setShowStarted();
 	}, [localHasShowStart]);
 
+	console.log(RV);
+
 	useEffect(() => {
 		if (hasShowStarted === true) {
 			const id = window.setInterval(async () => {
 				setOverallShowTimer((prev) => {
-					console.log(prev - 1);
+					//console.log(prev - 1);
 					if (prev - 1 <= 0) {
 						EndTheShow();
+					} else {
+						RunTheShow();
 					}
 					return prev - 1;
 				});
@@ -87,7 +93,10 @@ export const ShowTimeContextProvider: React.FC<
 	const StartTheShow = useCallback(() => {
 		setShowStarted();
 		setLocalHasShowStart(true);
-		setOverallShowTimer(1 * 10);
+		setOverallShowTimer(showLengthInMinutes * 60);
+	}, []);
+
+	const RunTheShow = useCallback(() => {
 	}, []);
 
 	const EndTheShow = useCallback(() => {

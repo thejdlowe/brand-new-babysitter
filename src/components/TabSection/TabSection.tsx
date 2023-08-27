@@ -1,9 +1,6 @@
 import React, { FC } from "react";
 import {
 	Typography,
-	Grid,
-	FormControlLabel,
-	Switch,
 	Tabs,
 	Tab,
 } from "@mui/material";

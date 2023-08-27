@@ -1,6 +1,4 @@
 import React, { FC } from "react";
-import { Typography } from "@mui/material";
-//import { useBabySitterContext } from "../../../BabySitterContext";
 import { useBabySitterContext } from "../BabySitterContext";
 import { componentsAndTitles } from "../../data/componentsAndTitles";
 
