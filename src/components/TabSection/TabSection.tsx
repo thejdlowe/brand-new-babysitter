@@ -19,7 +19,7 @@ export const TabSection: FC = () => {
 			</Typography>
 			<Tabs value={currentTab} onChange={handleTabChange}>
 				{Object.keys(componentsAndTitles).map((title) => {
-					return <Tab label={title} />;
+					return <Tab key={`tab-${title}`} label={title} />;
 				})}
 			</Tabs>
 		</>

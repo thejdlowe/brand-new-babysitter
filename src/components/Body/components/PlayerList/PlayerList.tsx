@@ -27,6 +27,7 @@ export const PlayerList: FC = () => {
 		);
 		return (
 			<Grid
+				key={`grid-key-${name}`}
 				item
 				xs={3}
 				sx={{

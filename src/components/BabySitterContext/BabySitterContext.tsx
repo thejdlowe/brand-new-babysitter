@@ -61,7 +61,7 @@ export const BabySitterContextProvider: React.FC<
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
 
-	const [hasShowStarted, setShowStarted] = useState<boolean>(false);
+	const [hasShowStarted, setShowStartedVariable] = useState<boolean>(false);
 	const [currentTab, setCurrentTab] = useState<number>(0);
 	const [logs, setLogs] = useState<string[]>([]);
 	const [gapRanges, setGapRanges] = useState<number[]>([30, 120]);
@@ -124,9 +124,9 @@ export const BabySitterContextProvider: React.FC<
 		setGapRanges(newValue as number[]);
 	};
 
-	const setHasShowStarted = () => {
+	const setShowStarted = () => {
 		console.log("Success?", hasShowStarted);
-		setShowStarted((prevValue) => !prevValue);
+		setShowStartedVariable((prevValue) => !prevValue);
 	};
 
 	const updatePlayer = (playerName: string) => {
@@ -181,7 +181,7 @@ export const BabySitterContextProvider: React.FC<
 		updatePlayer,
 		addPlayer,
 		setShowLength,
-		setShowStarted: setHasShowStarted,
+		setShowStarted,
 		handleTabChange,
 		handleGapRangeChange,
 		deletePlayer,

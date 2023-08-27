@@ -80,15 +80,16 @@ export const ShowTimeContextProvider: React.FC<
 
 	console.log({ activePlayers });
 
-	const StartTheShow = () => {
+	const StartTheShow = useCallback(() => {
 		setShowStarted();
 		setOverallShowTimer(1 * 10);
-	};
-	const EndTheShow = () => {
+	}, []);
+	const EndTheShow = useCallback(() => {
 		clearInterval(timerHandle.current);
 		setShowStarted();
 		console.log("Whoo?");
-	};
+	}, [setShowStarted]);
+
 	const everythingObject = {
 		overallShowTimer,
 		setOverallShowTimer,
