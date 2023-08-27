@@ -7,6 +7,7 @@ import React, {
 	useRef,
 } from "react";
 import { useBabySitterContext } from "../BabySitterContext";
+import { ResponsiveVoice } from "../../helpers";
 
 export interface ShowTimeContextProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
@@ -45,9 +46,6 @@ const ShowTimeContext = createContext<ShowTimeContextValues>({
 	overallShowTimer: -1,
 });
 
-// @ts-ignore
-const RV = window.responsiveVoice;
-
 export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
 > = ({
@@ -65,8 +63,6 @@ export const ShowTimeContextProvider: React.FC<
 	useEffect(() => {
 		if (!localHasShowStart) setShowStarted();
 	}, [localHasShowStart]);
-
-	console.log(RV);
 
 	useEffect(() => {
 		if (hasShowStarted === true) {
@@ -90,14 +86,15 @@ export const ShowTimeContextProvider: React.FC<
 
 	//console.log({ activePlayers });
 
-	const StartTheShow = useCallback(() => {
+	const StartTheShow = useCallback(async () => {
+		await ResponsiveVoice("Whoa what");
+		await ResponsiveVoice("Does this work?");
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
 	}, []);
 
-	const RunTheShow = useCallback(() => {
-	}, []);
+	const RunTheShow = useCallback(() => {}, []);
 
 	const EndTheShow = useCallback(() => {
 		clearInterval(timerHandle.current);
