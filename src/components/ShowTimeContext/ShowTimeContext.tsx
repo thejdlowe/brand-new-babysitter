@@ -57,7 +57,12 @@ export const ShowTimeContextProvider: React.FC<
 	const { setShowStarted, showLengthInMinutes } = useBabySitterContext();
 	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
 	const [individualTimer, setIndividualTimer] = useState<number>(-1);
+	const [localHasShowStart, setLocalHasShowStart] = useState<boolean>(false);
 	const timerHandle = useRef<number>(0);
+
+	useEffect(() => {
+		if (!localHasShowStart) setShowStarted();
+	}, [localHasShowStart]);
 
 	useEffect(() => {
 		if (hasShowStarted === true) {
@@ -65,7 +70,6 @@ export const ShowTimeContextProvider: React.FC<
 				setOverallShowTimer((prev) => {
 					console.log(prev - 1);
 					if (prev - 1 <= 0) {
-						setShowStarted();
 						EndTheShow();
 					}
 					return prev - 1;
@@ -78,16 +82,17 @@ export const ShowTimeContextProvider: React.FC<
 		};
 	}, [hasShowStarted, timerHandle]);
 
-	console.log({ activePlayers });
+	//console.log({ activePlayers });
 
 	const StartTheShow = useCallback(() => {
 		setShowStarted();
+		setLocalHasShowStart(true);
 		setOverallShowTimer(1 * 10);
 	}, []);
+
 	const EndTheShow = useCallback(() => {
 		clearInterval(timerHandle.current);
-		setShowStarted();
-		console.log("Whoo?");
+		setLocalHasShowStart(false);
 	}, [setShowStarted]);
 
 	const everythingObject = {
