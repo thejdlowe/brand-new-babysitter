@@ -7,7 +7,13 @@ import React, {
 	useRef,
 } from "react";
 import { useBabySitterContext } from "../BabySitterContext";
-import { Helpers } from "../../helpers";
+import {
+	Helpers,
+	getRandomFromArrPrompts,
+	GetStartingIntro,
+	GetStartingPrompt,
+} from "../../helpers";
+import { startupSounds } from "../../data/sounds";
 
 export interface ShowTimeContextProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
@@ -83,13 +89,22 @@ export const ShowTimeContextProvider: React.FC<
 	//console.log({ activePlayers });
 
 	const StartTheShow = useCallback(async () => {
-		await PlayAudio("winxp.mp3");
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
-		await ResponsiveVoice("Whoa what");
-		await ResponsiveVoice("Does this work?");
+
+		await StartUpSound();
+		await ResponsiveVoice(GetStartingIntro());
+		await ResponsiveVoice(
+			"This is a program designed to interrupt improv scenes randomly and make changes. None of this is pre-written."
+		);
+		await ResponsiveVoice(`Let's start this off: ${GetStartingPrompt()}`);
 	}, [showLengthInMinutes]);
+
+	const StartUpSound = async () => {
+		const audio = getRandomFromArrPrompts(startupSounds);
+		await PlayAudio(audio);
+	};
 
 	const RunTheShow = useCallback(async () => {}, []);
 
@@ -99,6 +114,7 @@ export const ShowTimeContextProvider: React.FC<
 		await ResponsiveVoice(
 			"Show's over folks; you don't have to go home, but you can't stay here."
 		);
+		setOverallShowTimer(-1);
 	}, [setShowStarted]);
 
 	const everythingObject = {
