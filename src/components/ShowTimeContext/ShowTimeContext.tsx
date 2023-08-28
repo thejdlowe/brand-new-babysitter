@@ -67,6 +67,9 @@ export const ShowTimeContextProvider: React.FC<
 				});
 				if (canImprov) {
 					setIndividualTimer((prev) => {
+						if (prev - 1 <= 0) {
+							RunTheShow();
+						}
 						return prev - 1;
 					});
 				}
@@ -93,9 +96,11 @@ export const ShowTimeContextProvider: React.FC<
 		);
 		await ResponsiveVoice(`Let's start this off: ${GetStartingPrompt()}`);
 		setCanImprov(true);
-	}, [showLengthInMinutes]);
+	}, [showLengthInMinutes, gapRanges]);
 
-	const RunTheShow = useCallback(async () => {}, []);
+	const RunTheShow = useCallback(async () => {
+		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
+	}, [gapRanges]);
 
 	const EndTheShow = useCallback(async () => {
 		setCanImprov(false);
