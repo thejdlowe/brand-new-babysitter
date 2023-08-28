@@ -17,6 +17,14 @@ const hhmmss = (secs: number) => {
 };
 
 export const Status: FC = () => {
+	const { logs } = useBabySitterContext();
 	const { overallShowTimer } = useShowTimeContext();
-	return <Typography variant="h4">{hhmmss(overallShowTimer)}</Typography>;
+	return (
+		<>
+			<Typography variant="h4">{hhmmss(overallShowTimer)}</Typography>
+			{logs.map((log) => {
+				return <Typography>{log}</Typography>;
+			})}
+		</>
+	);
 };

@@ -7,7 +7,7 @@ import React, {
 	useRef,
 } from "react";
 import { useBabySitterContext } from "../BabySitterContext";
-import { ResponsiveVoice } from "../../helpers";
+import { Helpers } from "../../helpers";
 
 export interface ShowTimeContextProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
@@ -48,17 +48,14 @@ const ShowTimeContext = createContext<ShowTimeContextValues>({
 
 export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
-> = ({
-	children,
-	activePlayers,
-
-	hasShowStarted,
-}) => {
-	const { setShowStarted, showLengthInMinutes } = useBabySitterContext();
+> = ({ children, activePlayers, hasShowStarted }) => {
+	const { setShowStarted, showLengthInMinutes, addToLog } =
+		useBabySitterContext();
 	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
 	const [individualTimer, setIndividualTimer] = useState<number>(-1);
 	const [localHasShowStart, setLocalHasShowStart] = useState<boolean>(false);
 	const timerHandle = useRef<number>(0);
+	const { ResponsiveVoice, PlayAudio, sleep } = Helpers(addToLog);
 
 	useEffect(() => {
 		if (!localHasShowStart) setShowStarted();
@@ -68,7 +65,6 @@ export const ShowTimeContextProvider: React.FC<
 		if (hasShowStarted === true) {
 			const id = window.setInterval(async () => {
 				setOverallShowTimer((prev) => {
-					//console.log(prev - 1);
 					if (prev - 1 <= 0) {
 						EndTheShow();
 					} else {
@@ -87,18 +83,22 @@ export const ShowTimeContextProvider: React.FC<
 	//console.log({ activePlayers });
 
 	const StartTheShow = useCallback(async () => {
-		await ResponsiveVoice("Whoa what");
-		await ResponsiveVoice("Does this work?");
+		await PlayAudio("winxp.mp3");
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
-	}, []);
+		await ResponsiveVoice("Whoa what");
+		await ResponsiveVoice("Does this work?");
+	}, [showLengthInMinutes]);
 
-	const RunTheShow = useCallback(() => {}, []);
+	const RunTheShow = useCallback(async () => {}, []);
 
-	const EndTheShow = useCallback(() => {
+	const EndTheShow = useCallback(async () => {
 		clearInterval(timerHandle.current);
 		setLocalHasShowStart(false);
+		await ResponsiveVoice(
+			"Show's over folks; you don't have to go home, but you can't stay here."
+		);
 	}, [setShowStarted]);
 
 	const everythingObject = {

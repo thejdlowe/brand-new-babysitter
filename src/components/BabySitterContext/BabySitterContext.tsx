@@ -20,6 +20,7 @@ interface BabySitterContextValues {
 	hasShowStarted: boolean;
 	currentTab: number;
 	gapRanges: number[];
+	logs: string[];
 	updatePlayer: (player: string) => void;
 	addPlayer: (player: string) => void;
 	setShowLength: (length: number) => void;
@@ -28,6 +29,7 @@ interface BabySitterContextValues {
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
 	deletePlayer: (player?: string) => void;
 	confirm: (msg: string, func: () => void) => void;
+	addToLog: (msg: string) => void;
 }
 
 const BabySitterContext = createContext<BabySitterContextValues>({
@@ -37,6 +39,7 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	hasShowStarted: false,
 	currentTab: 0,
 	gapRanges: [30, 120],
+	logs: [],
 	updatePlayer: () => {},
 	addPlayer: () => {},
 	setShowLength: () => {},
@@ -45,6 +48,7 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	handleGapRangeChange: () => {},
 	deletePlayer: () => {},
 	confirm: () => {},
+	addToLog: () => {},
 });
 export const BabySitterContextProvider: React.FC<
 	BabySitterContextProviderProps
@@ -104,7 +108,7 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	const addToLog = (str: string) => {
-		const newLog = `: ${str}`;
+		const newLog = `${+new Date()}: ${str}`;
 		setLogs((prevLogs) => [...prevLogs, newLog]);
 	};
 
@@ -144,6 +148,10 @@ export const BabySitterContextProvider: React.FC<
 	}, [hasShowStarted]);*/
 
 	useEffect(() => {
+		console.log(logs);
+	}, [logs]);
+
+	useEffect(() => {
 		buildInitialPlayers();
 	}, []);
 
@@ -162,6 +170,7 @@ export const BabySitterContextProvider: React.FC<
 		hasShowStarted,
 		currentTab,
 		gapRanges,
+		logs,
 		updatePlayer,
 		addPlayer,
 		setShowLength,
@@ -170,6 +179,7 @@ export const BabySitterContextProvider: React.FC<
 		handleGapRangeChange,
 		deletePlayer,
 		confirm,
+		addToLog,
 	};
 
 	const ShowTimeProps = {

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Slider, Typography } from "@mui/material";
+import { FormControlLabel, Checkbox, Slider, Typography } from "@mui/material";
 import { useBabySitterContext } from "../../../BabySitterContext";
 
 export const ShowLength: FC = () => {
@@ -11,7 +11,18 @@ export const ShowLength: FC = () => {
 	return (
 		<>
 			<Typography variant="h6">Show Length (in minutes)</Typography>
-
+			<FormControlLabel
+				control={
+					<Checkbox
+						checked={showLengthInMinutes === Infinity}
+						onChange={() => {
+							if (showLengthInMinutes === Infinity) setShowLength(20);
+							else setShowLength(Infinity);
+						}}
+					/>
+				}
+				label="Infinite Show"
+			/>
 			<Slider
 				onChange={handleChange}
 				marks

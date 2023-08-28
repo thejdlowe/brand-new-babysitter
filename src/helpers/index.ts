@@ -1,1 +1,1 @@
-export * from "./ResponsiveVoice";
+export * from "./AudioHelpers";
