@@ -79,7 +79,7 @@ export const ShowTimeContextProvider: React.FC<
 		return () => {
 			clearInterval(timerHandle.current);
 		};
-	}, [hasShowStarted, timerHandle]);
+	}, [hasShowStarted, timerHandle, canImprov]);
 
 	//console.log({ activePlayers });
 
@@ -95,12 +95,18 @@ export const ShowTimeContextProvider: React.FC<
 			"This is a program designed to interrupt improv scenes randomly and make changes. None of this is pre-written."
 		);
 		await ResponsiveVoice(`Let's start this off: ${GetStartingPrompt()}`);
+
 		setCanImprov(true);
 	}, [showLengthInMinutes, gapRanges]);
 
 	const RunTheShow = useCallback(async () => {
 		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
-	}, [gapRanges]);
+		setCanImprov(false);
+		//Bug: Currently announces it twice
+		//await ResponsiveVoice("Butt fart");
+
+		setCanImprov(true);
+	}, [gapRanges, setIndividualTimer, setCanImprov]);
 
 	const EndTheShow = useCallback(async () => {
 		setCanImprov(false);

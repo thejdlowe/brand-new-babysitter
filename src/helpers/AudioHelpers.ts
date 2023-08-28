@@ -10,7 +10,11 @@ export const Helpers = (logger: (str: string) => void) => {
 	const ResponsiveVoice = (msg: string) => {
 		return new Promise((resolve) => {
 			logger(`RV: ${msg}`);
-			RV.speak(msg, "UK English Female", { rate: 0.9, onend: resolve });
+			//RV.speak(msg, "UK English Female", { rate: 0.9, onend: resolve });
+			const utterance = new window.SpeechSynthesisUtterance();
+			utterance.text = msg;
+			utterance.onend = resolve;
+			window.speechSynthesis.speak(utterance);
 		});
 	};
 
