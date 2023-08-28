@@ -51,10 +51,17 @@ export const ShowTimeContextProvider: React.FC<
 	const timerHandle = useRef<number>(0);
 	const { ResponsiveVoice, PlayAudio, sleep, GetStartingAudio } =
 		Helpers(addToLog);
+	const [runRunTheShow, setRunRunTheShow] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (!localHasShowStart) setShowStarted();
 	}, [localHasShowStart]);
+
+	useEffect(() => {
+		if (runRunTheShow === true) {
+			RunTheShow();
+		}
+	}, [runRunTheShow]);
 
 	useEffect(() => {
 		if (hasShowStarted === true) {
@@ -67,8 +74,8 @@ export const ShowTimeContextProvider: React.FC<
 				});
 				if (canImprov) {
 					setIndividualTimer((prev) => {
-						if (prev - 1 <= 0) {
-							RunTheShow();
+						if (prev - 1 == 0) {
+							setRunRunTheShow(true);
 						}
 						return prev - 1;
 					});
@@ -87,6 +94,7 @@ export const ShowTimeContextProvider: React.FC<
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
+		console.log("temp");
 		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
 
 		await PlayAudio(GetStartingAudio());
@@ -102,10 +110,13 @@ export const ShowTimeContextProvider: React.FC<
 	const RunTheShow = useCallback(async () => {
 		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
 		setCanImprov(false);
-		//Bug: Currently announces it twice
+
 		//await ResponsiveVoice("Butt fart");
 
+		await ResponsiveVoice(GetRandomPrompt());
+
 		setCanImprov(true);
+		setRunRunTheShow(false);
 	}, [gapRanges, setIndividualTimer, setCanImprov]);
 
 	const EndTheShow = useCallback(async () => {

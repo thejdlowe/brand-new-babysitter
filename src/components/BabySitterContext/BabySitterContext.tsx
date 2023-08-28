@@ -147,10 +147,6 @@ export const BabySitterContextProvider: React.FC<
 	}, [hasShowStarted]);*/
 
 	useEffect(() => {
-		console.log(logs);
-	}, [logs]);
-
-	useEffect(() => {
 		buildInitialPlayers();
 	}, []);
 
