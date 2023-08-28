@@ -94,7 +94,7 @@ export const ShowTimeContextProvider: React.FC<
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
-		console.log("temp");
+
 		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
 
 		await PlayAudio(GetStartingAudio());
