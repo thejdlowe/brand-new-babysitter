@@ -17,7 +17,59 @@ export const startItOff: string[] = [
 	`What is something your parents hate?`,
 ];
 
-export const emotions:string[] = [
+export const prompts: string[] = [
+	`Rotate characters`,
+	`Increase your physicality.`,
+	`Confess your undying love.`,
+	`Talk about your biggest fear.`,
+	`Talk about what makes you angry.`,
+	`Make an offer they can't refuse.`,
+	`Whatever you are feeling right now, increase it.`,
+	`Until the end of the scene, you must speak in rhyme.`,
+	`Until the end of the scene, move in slow motion.`,
+	`Speak in only three word sentences.`,
+	`Everyone is suddenly filled with the emotion: $emotion.`,
+	`Style change: Continue the scene in the style of $style.`,
+	`You may only speak when touching another cast member.`,
+	`One of the cast members is here from the future, reveal them`,
+	`One of the cast members knows a secret about one of the others. Reveal it.`,
+	`One of the cast members has huge dreams. What are they?`,
+	`One of the cast members has super powers. Reveal them.`,
+	`One of the cast members is feeling paranoid. Act accordingly.`,
+	`One of the cast members has a terrible idea. What is it?`,
+	`One of the cast members has an amazing idea. What is it?`,
+	`One of the cast members shares a childhood story. What's the story?`,
+	`One of the cast members has a hidden motive. Reveal it.`,
+	`For the rest of the scene, talk like pirates.`,
+	`For the rest of the scene, talk in a high falsetto.`,
+];
+
+export const styles: string[] = [
+	`Documentary`,
+	`Horror`,
+	`Romantic Comedy`,
+	`Shakespearean`,
+	`Wild West`,
+	`Film Noir`,
+	`Science Fiction`,
+	`Superhero Movie`,
+	`Coming Of Age`,
+	`Fantasy`,
+	`Buddy Cop`,
+	`Soap Opera`,
+	`Sitcom`,
+	`Educational Children Programming`,
+	`Silent Film`,
+	`Elementary School Play`,
+	`Disaster`,
+	`Period Drama`,
+	`Police Procedural`,
+	`Cooking Show`,
+	`Reality Show`,
+	`Game Show`,
+];
+
+export const emotions: string[] = [
 	`Frightened`,
 	`Helpless`,
 	`Panicked`,
@@ -119,5 +171,5 @@ export const emotions:string[] = [
 	`Romantic`,
 	`Longing`,
 	`Tender`,
-	`Peaceful`
+	`Peaceful`,
 ];
