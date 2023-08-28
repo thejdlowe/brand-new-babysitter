@@ -1,5 +1,10 @@
+import { startupSounds } from "../data/sounds";
+import { getRandomFromArrPrompts } from "./PromptHelpers";
+
 // @ts-ignore
 const RV = window.responsiveVoice;
+//may need to use something akin to https://github.com/MikeyParton/react-speech-kit/tree/master
+
 export const Helpers = (logger: (str: string) => void) => {
 	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 	const ResponsiveVoice = (msg: string) => {
@@ -18,9 +23,15 @@ export const Helpers = (logger: (str: string) => void) => {
 		});
 	};
 
+	const GetStartingAudio = () => {
+		const audio = getRandomFromArrPrompts(startupSounds);
+		return audio;
+	};
+
 	return {
 		sleep,
 		ResponsiveVoice,
 		PlayAudio,
+		GetStartingAudio,
 	};
 };

@@ -7,3 +7,6 @@ export const startupSounds: string[] = [
 	`winxp.mp3`,
 	`xbox360startup.mp3`,
 ];
+
+export const promptAlertSound = "alert.mp3";
+export const audienceAlertSound = "codec.mp3";
