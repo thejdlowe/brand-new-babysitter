@@ -7,7 +7,12 @@ import React, {
 	useRef,
 } from "react";
 import { useBabySitterContext } from "../BabySitterContext";
-import { Helpers, GetStartingIntro, GetStartingPrompt } from "../../helpers";
+import {
+	Helpers,
+	GetStartingIntro,
+	GetStartingPrompt,
+	GetRandomPrompt,
+} from "../../helpers";
 import { startupSounds } from "../../data/sounds";
 
 export interface ShowTimeContextProviderProps {
@@ -17,44 +22,32 @@ export interface ShowTimeContextProviderProps {
 }
 
 interface ShowTimeContextValues {
-	/*overallShowTimer: number;
-	individualTimer: number;
-	setOverallShowTimer: React.Dispatch<React.SetStateAction<number>>;
-	setIndividualTimer: React.Dispatch<React.SetStateAction<number>>;*/
 	StartTheShow: () => void;
 	EndTheShow: () => void;
 	overallShowTimer: number;
-	/*
-	showLengthInMinutes: number;
-	hasShowStarted: boolean;
-	currentTab: number;
-	gapRanges: number[];
-	updatePlayer: (player: string) => void;
-	addPlayer: (player: string) => void;
-	setShowLength: (length: number) => void;
-	setShowStarted: () => void;
-	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
-	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
-	deletePlayer: (player?: string) => void;
-	confirm: (msg: string, func: () => void) => void;
-	StartTheShow: () => void;
-	EndTheShow: () => void;*/
+	individualTimer: number;
 }
 
 const ShowTimeContext = createContext<ShowTimeContextValues>({
 	StartTheShow: () => {},
 	EndTheShow: () => {},
 	overallShowTimer: -1,
+	individualTimer: -1,
 });
+
+const randomIntFromInterval = (min: number, max: number): number => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
 export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
 > = ({ children, activePlayers, hasShowStarted }) => {
-	const { setShowStarted, showLengthInMinutes, addToLog } =
+	const { setShowStarted, showLengthInMinutes, gapRanges, addToLog } =
 		useBabySitterContext();
 	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
 	const [individualTimer, setIndividualTimer] = useState<number>(-1);
 	const [localHasShowStart, setLocalHasShowStart] = useState<boolean>(false);
+	const [canImprov, setCanImprov] = useState<boolean>(false);
 	const timerHandle = useRef<number>(0);
 	const { ResponsiveVoice, PlayAudio, sleep, GetStartingAudio } =
 		Helpers(addToLog);
@@ -69,11 +62,14 @@ export const ShowTimeContextProvider: React.FC<
 				setOverallShowTimer((prev) => {
 					if (prev - 1 <= 0) {
 						EndTheShow();
-					} else {
-						RunTheShow();
 					}
 					return prev - 1;
 				});
+				if (canImprov) {
+					setIndividualTimer((prev) => {
+						return prev - 1;
+					});
+				}
 			}, 1000);
 			timerHandle.current = id;
 		}
@@ -88,6 +84,7 @@ export const ShowTimeContextProvider: React.FC<
 		setShowStarted();
 		setLocalHasShowStart(true);
 		setOverallShowTimer(showLengthInMinutes * 60);
+		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
 
 		await PlayAudio(GetStartingAudio());
 		await ResponsiveVoice(GetStartingIntro());
@@ -95,17 +92,20 @@ export const ShowTimeContextProvider: React.FC<
 			"This is a program designed to interrupt improv scenes randomly and make changes. None of this is pre-written."
 		);
 		await ResponsiveVoice(`Let's start this off: ${GetStartingPrompt()}`);
+		setCanImprov(true);
 	}, [showLengthInMinutes]);
 
 	const RunTheShow = useCallback(async () => {}, []);
 
 	const EndTheShow = useCallback(async () => {
+		setCanImprov(false);
 		clearInterval(timerHandle.current);
 		setLocalHasShowStart(false);
 		await ResponsiveVoice(
 			"Show's over folks; you don't have to go home, but you can't stay here."
 		);
 		setOverallShowTimer(-1);
+		setIndividualTimer(-1);
 	}, [setShowStarted]);
 
 	const everythingObject = {

@@ -121,7 +121,6 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	const setShowStarted = () => {
-		console.log("Success?", hasShowStarted);
 		setShowStartedVariable((prevValue) => !prevValue);
 	};
 
