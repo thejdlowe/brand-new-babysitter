@@ -17,6 +17,7 @@ interface ImprovBotContextValues {
 	players: Player;
 	activePlayers: string[];
 	showLengthInMinutes: number;
+	audienceParticipationPercentage: number;
 	hasShowStarted: boolean;
 	currentTab: number;
 	gapRanges: number[];
@@ -24,6 +25,7 @@ interface ImprovBotContextValues {
 	updatePlayer: (player: string) => void;
 	addPlayer: (player: string) => void;
 	setShowLength: (length: number) => void;
+	setAudienceParticipationPercentage: (percentage: number) => void;
 	setShowStarted: () => void;
 	handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 	handleGapRangeChange: (event: Event, newValue: number | number[]) => void;
@@ -36,6 +38,7 @@ const ImprovBotContext = createContext<ImprovBotContextValues>({
 	players: {},
 	activePlayers: [],
 	showLengthInMinutes: 20,
+	audienceParticipationPercentage: 0,
 	hasShowStarted: false,
 	currentTab: 0,
 	gapRanges: [30, 120],
@@ -43,6 +46,7 @@ const ImprovBotContext = createContext<ImprovBotContextValues>({
 	updatePlayer: () => {},
 	addPlayer: () => {},
 	setShowLength: () => {},
+	setAudienceParticipationPercentage: () => {},
 	setShowStarted: () => {},
 	handleTabChange: () => {},
 	handleGapRangeChange: () => {},
@@ -56,6 +60,8 @@ export const ImprovBotContextProvider: React.FC<
 	const [playersAll, setActivePlayer] = useState({});
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
 	const [showLengthInMinutes, setShowLength] = useState<number>(20);
+	const [audienceParticipationPercentage, setAudienceParticipationPercentage] =
+		useState<number>(0);
 
 	const [hasShowStarted, setShowStartedVariable] = useState<boolean>(false);
 	const [currentTab, setCurrentTab] = useState<number>(0);
@@ -162,6 +168,7 @@ export const ImprovBotContextProvider: React.FC<
 		players: playersAll,
 		activePlayers,
 		showLengthInMinutes,
+		audienceParticipationPercentage,
 		hasShowStarted,
 		currentTab,
 		gapRanges,
@@ -169,6 +176,7 @@ export const ImprovBotContextProvider: React.FC<
 		updatePlayer,
 		addPlayer,
 		setShowLength,
+		setAudienceParticipationPercentage,
 		setShowStarted,
 		handleTabChange,
 		handleGapRangeChange,
