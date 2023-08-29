@@ -16,7 +16,10 @@ export const AudienceParticipation: FC = () => {
 			<Typography variant="h6">
 				Audience Participation Percentage: {audienceParticipationPercentage}%
 			</Typography>
-
+			<Typography>
+				This represents the chance that the next prompt that comes is directed
+				at the audience, instead of something on the bot's lists.
+			</Typography>
 			<Slider
 				onChange={handleChange}
 				min={0}
