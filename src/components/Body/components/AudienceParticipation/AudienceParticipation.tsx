@@ -1,6 +1,30 @@
 import React, { FC } from "react";
-import { Typography } from "@mui/material";
+import { FormControlLabel, Checkbox, Slider, Typography } from "@mui/material";
+import { useImprovBotContext } from "../../../ImprovBotContext";
 
 export const AudienceParticipation: FC = () => {
-	return <Typography variant="h4">Improv Bot Placeholder</Typography>;
+	const {
+		audienceParticipationPercentage,
+		setAudienceParticipationPercentage,
+		hasShowStarted,
+	} = useImprovBotContext();
+	const handleChange = (event: Event, newValue: number | number[]) => {
+		setAudienceParticipationPercentage(newValue as number);
+	};
+	return (
+		<>
+			<Typography variant="h6">
+				Audience Participation Percentage: {audienceParticipationPercentage}%
+			</Typography>
+
+			<Slider
+				onChange={handleChange}
+				min={0}
+				max={100}
+				step={1}
+				value={audienceParticipationPercentage}
+				disabled={hasShowStarted}
+			/>
+		</>
+	);
 };

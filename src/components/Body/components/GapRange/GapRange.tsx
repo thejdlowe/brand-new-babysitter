@@ -6,16 +6,14 @@ export const GapRange: FC = () => {
 	const { gapRanges, handleGapRangeChange } = useImprovBotContext();
 	return (
 		<>
-			<Typography variant="h6">Gap Range (in seconds)</Typography>
+			<Typography variant="h6">Gap Range (in seconds): Between {gapRanges[0]} and {gapRanges[1]} seconds</Typography>
 
 			<Slider
 				onChange={handleGapRangeChange}
-				marks
 				min={15}
 				max={180}
 				step={1}
 				value={gapRanges}
-				valueLabelDisplay="auto"
 			/>
 		</>
 	);

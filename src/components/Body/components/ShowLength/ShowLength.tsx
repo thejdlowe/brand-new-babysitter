@@ -10,7 +10,9 @@ export const ShowLength: FC = () => {
 	};
 	return (
 		<>
-			<Typography variant="h6">Show Length (in minutes)</Typography>
+			<Typography variant="h6">
+				Show Length (in minutes): {showLengthInMinutes}
+			</Typography>
 			<FormControlLabel
 				control={
 					<Checkbox
@@ -25,12 +27,10 @@ export const ShowLength: FC = () => {
 			/>
 			<Slider
 				onChange={handleChange}
-				marks
 				min={1}
 				max={60}
 				step={1}
 				value={showLengthInMinutes}
-				valueLabelDisplay="auto"
 				disabled={hasShowStarted}
 			/>
 		</>
