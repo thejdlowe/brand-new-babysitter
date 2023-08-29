@@ -42,8 +42,13 @@ const randomIntFromInterval = (min: number, max: number): number => {
 export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
 > = ({ children, activePlayers, hasShowStarted }) => {
-	const { setShowStarted, showLengthInMinutes, gapRanges, addToLog } =
-		useImprovBotContext();
+	const {
+		setShowStarted,
+		showLengthInMinutes,
+		gapRanges,
+		audienceParticipationPercentage,
+		addToLog,
+	} = useImprovBotContext();
 	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
 	const [individualTimer, setIndividualTimer] = useState<number>(-1);
 	const [localHasShowStart, setLocalHasShowStart] = useState<boolean>(false);
@@ -111,13 +116,21 @@ export const ShowTimeContextProvider: React.FC<
 		setIndividualTimer(randomIntFromInterval(gapRanges[0], gapRanges[1]));
 		setCanImprov(false);
 
-		//await ResponsiveVoice("Butt fart");
-
-		await ResponsiveVoice(GetRandomPrompt());
+		if (AskForAudience()) {
+			await ResponsiveVoice("We got an audience!");
+		} else {
+			await ResponsiveVoice(GetRandomPrompt());
+		}
 
 		setCanImprov(true);
 		setRunRunTheShow(false);
 	}, [gapRanges, setIndividualTimer, setCanImprov]);
+
+	const AskForAudience = useCallback(() => {
+		const rand = Math.random() * 100;
+		if (rand <= audienceParticipationPercentage) return true;
+		return false;
+	}, [audienceParticipationPercentage]);
 
 	const EndTheShow = useCallback(async () => {
 		setCanImprov(false);
