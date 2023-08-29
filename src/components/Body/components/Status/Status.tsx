@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Typography } from "@mui/material";
-import { useBabySitterContext } from "../../../BabySitterContext";
+import { useImprovBotContext } from "../../../ImprovBotContext";
 import { useShowTimeContext } from "../../../ShowTimeContext";
 //from https://stackoverflow.com/questions/31337370/how-to-convert-seconds-to-hhmmss-in-moment-js
 const pad = (num: number) => {
@@ -17,7 +17,7 @@ const hhmmss = (secs: number) => {
 };
 
 export const Status: FC = () => {
-	const { logs } = useBabySitterContext();
+	const { logs } = useImprovBotContext();
 	const { overallShowTimer, individualTimer } = useShowTimeContext();
 	return (
 		<>

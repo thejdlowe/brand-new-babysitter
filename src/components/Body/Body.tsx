@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { useBabySitterContext } from "../BabySitterContext";
+import { useImprovBotContext } from "../ImprovBotContext";
 import { componentsAndTitles } from "../../data/componentsAndTitles";
 
 export const Body: FC = () => {
-	const { currentTab } = useBabySitterContext();
+	const { currentTab } = useImprovBotContext();
 	const components = Object.values(componentsAndTitles);
 	const bodyParts = components.map((Component, index) => {
 		return (

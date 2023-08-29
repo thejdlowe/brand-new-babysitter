@@ -8,13 +8,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 
-export interface BabySitterContextProviderProps {
+export interface ImprovBotContextProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
 	anyAdditionalFunctions?: () => void | undefined;
 }
-type BabySitterPlayer = Record<string, boolean>;
-interface BabySitterContextValues {
-	players: BabySitterPlayer;
+type Player = Record<string, boolean>;
+interface ImprovBotContextValues {
+	players: Player;
 	activePlayers: string[];
 	showLengthInMinutes: number;
 	hasShowStarted: boolean;
@@ -32,7 +32,7 @@ interface BabySitterContextValues {
 	addToLog: (msg: string) => void;
 }
 
-const BabySitterContext = createContext<BabySitterContextValues>({
+const ImprovBotContext = createContext<ImprovBotContextValues>({
 	players: {},
 	activePlayers: [],
 	showLengthInMinutes: 20,
@@ -50,8 +50,8 @@ const BabySitterContext = createContext<BabySitterContextValues>({
 	confirm: () => {},
 	addToLog: () => {},
 });
-export const BabySitterContextProvider: React.FC<
-	BabySitterContextProviderProps
+export const ImprovBotContextProvider: React.FC<
+	ImprovBotContextProviderProps
 > = ({ children, anyAdditionalFunctions }) => {
 	const [playersAll, setActivePlayer] = useState({});
 	const [activePlayers, setListOfPlayers] = useState<string[]>([]);
@@ -86,7 +86,7 @@ export const BabySitterContextProvider: React.FC<
 
 	const addPlayer = (player: string) => {
 		setActivePlayer((prevState) => {
-			const state: BabySitterPlayer = { ...prevState };
+			const state: Player = { ...prevState };
 			state[`${player}`] = true;
 			return state;
 		});
@@ -95,13 +95,13 @@ export const BabySitterContextProvider: React.FC<
 	const deletePlayer = (player?: string) => {
 		if (player) {
 			setActivePlayer((prevState) => {
-				const state: BabySitterPlayer = { ...prevState };
+				const state: Player = { ...prevState };
 				delete state[`${player}`];
 				return state;
 			});
 		} else {
 			setActivePlayer((prevState) => {
-				const state: BabySitterPlayer = {};
+				const state: Player = {};
 				return state;
 			});
 		}
@@ -125,13 +125,13 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	const updatePlayer = (playerName: string) => {
-		const temp: BabySitterPlayer = playersAll;
+		const temp: Player = playersAll;
 		temp[playerName] = !temp[playerName];
 		setActivePlayer((prevPlayers) => ({ ...prevPlayers, ...temp }));
 	};
 
 	const buildInitialPlayers = () => {
-		let players: BabySitterPlayer = {};
+		let players: Player = {};
 		playersList.forEach((player) => {
 			const key = `${player}`;
 			players[key] = true;
@@ -183,7 +183,7 @@ export const BabySitterContextProvider: React.FC<
 	};
 
 	return (
-		<BabySitterContext.Provider value={everythingObject}>
+		<ImprovBotContext.Provider value={everythingObject}>
 			<ShowTimeContextProvider {...ShowTimeProps}>
 				{children}
 				<Credits />
@@ -213,11 +213,11 @@ export const BabySitterContextProvider: React.FC<
 					</DialogActions>
 				</Dialog>
 			</ShowTimeContextProvider>
-		</BabySitterContext.Provider>
+		</ImprovBotContext.Provider>
 	);
 };
 
-export const useBabySitterContext = () => {
-	const value = useContext(BabySitterContext);
+export const useImprovBotContext = () => {
+	const value = useContext(ImprovBotContext);
 	return value;
 };

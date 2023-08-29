@@ -6,7 +6,7 @@ import React, {
 	useCallback,
 	useRef,
 } from "react";
-import { useBabySitterContext } from "../BabySitterContext";
+import { useImprovBotContext } from "../ImprovBotContext";
 import {
 	Helpers,
 	GetStartingIntro,
@@ -43,7 +43,7 @@ export const ShowTimeContextProvider: React.FC<
 	ShowTimeContextProviderProps
 > = ({ children, activePlayers, hasShowStarted }) => {
 	const { setShowStarted, showLengthInMinutes, gapRanges, addToLog } =
-		useBabySitterContext();
+		useImprovBotContext();
 	const [overallShowTimer, setOverallShowTimer] = useState<number>(-1);
 	const [individualTimer, setIndividualTimer] = useState<number>(-1);
 	const [localHasShowStart, setLocalHasShowStart] = useState<boolean>(false);

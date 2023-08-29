@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import { FormControlLabel, Checkbox, Slider, Typography } from "@mui/material";
-import { useBabySitterContext } from "../../../BabySitterContext";
+import { useImprovBotContext } from "../../../ImprovBotContext";
 
 export const ShowLength: FC = () => {
 	const { showLengthInMinutes, setShowLength, hasShowStarted } =
-		useBabySitterContext();
+		useImprovBotContext();
 	const handleChange = (event: Event, newValue: number | number[]) => {
 		setShowLength(newValue as number);
 	};

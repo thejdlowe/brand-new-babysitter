@@ -3,7 +3,7 @@ import { Grid, FormControlLabel, Switch, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import { useBabySitterContext } from "../../../BabySitterContext";
+import { useImprovBotContext } from "../../../ImprovBotContext";
 
 export const PlayerList: FC = () => {
 	const {
@@ -13,7 +13,7 @@ export const PlayerList: FC = () => {
 		addPlayer,
 		deletePlayer,
 		confirm,
-	} = useBabySitterContext();
+	} = useImprovBotContext();
 	const playerNames = Object.keys(players);
 	const buildPlayer = (name: string, active: boolean) => {
 		const switcher = (

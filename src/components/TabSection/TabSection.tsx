@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import { Typography, Tabs, Tab } from "@mui/material";
-import { useBabySitterContext } from "../BabySitterContext";
+import { useImprovBotContext } from "../ImprovBotContext";
 import { componentsAndTitles } from "../../data/componentsAndTitles";
 
 export const TabSection: FC = () => {
-	const { currentTab, handleTabChange } = useBabySitterContext();
+	const { currentTab, handleTabChange } = useImprovBotContext();
 	return (
 		<>
 			<Typography variant="h4">

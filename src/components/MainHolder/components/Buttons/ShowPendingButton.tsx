@@ -9,5 +9,4 @@ export const ShowPendingButton: FC = () => {
 			Start Show
 		</Button>
 	);
-	//return (<Typography variant="h4"><div onClick={setShowStarted}>Babysitter 2.0</div></Typography>)
 };

@@ -1,2 +1,2 @@
-export * from "./BabySitter";
-export * from "./BabySitterContext";
+export * from "./ImprovBot";
+export * from "./ImprovBotContext";

@@ -1,6 +1,6 @@
 import React from "react";
-import { BabySitter } from "./components";
+import { ImprovBot } from "./components";
 
 export default () => {
-	return <BabySitter />;
+	return <ImprovBot />;
 };
