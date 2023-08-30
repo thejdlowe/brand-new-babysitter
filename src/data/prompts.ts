@@ -42,6 +42,24 @@ export const prompts: string[] = [
 	`One of the cast members has a hidden motive. Reveal it.`,
 	`For the rest of the scene, talk like pirates.`,
 	`For the rest of the scene, talk in a high falsetto.`,
+	`Time warp: Continue this scene $timeWarp in $pastOrFuture.`
+];
+
+export const timeWarps: string[] = [
+	"five minutes",
+	"a day",
+	"a week",
+	"six months",
+	"a year",
+	"three years",
+	"a decade",
+	"a hundred years",
+
+];
+
+export const timeWarpsPastOrFuture: string[] = [
+	"the past",
+	"the future",
 ];
 
 export const styles: string[] = [

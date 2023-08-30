@@ -6,7 +6,7 @@ export const AudienceFacing: FC = () => {
 	const [sendSuggestion, { data, isSuccess, isLoading, isError, error }] =
 		useSendSuggestionMutation();
 	const [suggestion, setSuggestion] = useState<string>("");
-	console.log({ data, isLoading, error });
+
 	useEffect(() => {
 		if (isSuccess) setSuggestion("");
 	}, [isSuccess]);

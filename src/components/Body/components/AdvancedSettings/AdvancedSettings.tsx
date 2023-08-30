@@ -6,7 +6,7 @@ export const AdvancedSettings: FC = () => {
 	const { gapRanges, handleGapRangeChange } = useImprovBotContext();
 	return (
 		<>
-			<Typography variant="h6">Gap Range (in seconds)</Typography>
+			<Typography variant="h6">Advanced Settings</Typography>
 
 			<Slider
 				onChange={handleGapRangeChange}
