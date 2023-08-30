@@ -84,5 +84,5 @@ app.listen(port, () => {
 });
 
 //https://sightengine.com/docs/text-moderation-guide for text moderation
-//https://unsplash.com/documentation for image generation
+//https://github.com/unsplash/unsplash-js#photosgetrandomarguments-additionalfetchoptions for image generation
 //https://www.skema.cloud/en/blog/sagot-dev-2/get-started-with-sqlite-database-in-a-typescript-project-7?utm_campaign=Migration+blog+sagot.dev&utm_source=sagot.dev&utm_medium=Website
