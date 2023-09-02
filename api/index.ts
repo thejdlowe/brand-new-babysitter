@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import { createApi } from 'unsplash-js';
+import { createApi } from "unsplash-js";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -20,8 +20,8 @@ const axios = require("axios");
 const FormData = require("form-data");
 
 const unsplash = createApi({
-	accessKey: `${process.env.UNSPLASH_ACCESS_KEY}`
-})
+	accessKey: `${process.env.UNSPLASH_ACCESS_KEY}`,
+});
 
 const app: Express = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -123,17 +123,24 @@ app.get("/reset", (req: Request, res: Response) => {
 });
 
 app.get("/image", (req: Request, res: Response) => {
-	if(!suggestions.length) return res.status(204).send("Sorry, no suggestions found");
-	unsplash.photos.getRandom({query: suggestions[0]}).then(result => {
-		if(result.errors) {
-			res.status(500).send("Unable to fetch image")
+	db.get(
+		`SELECT * FROM suggestions ORDER BY RANDOM() LIMIT 1;`,
+		[],
+		(err: any, row: any) => {
+			if (err) {
+				res.status(500).send("Unable to select a suggestion");
+			}
+			if (!row) return res.json({ image: null });
+			unsplash.photos.getRandom({ query: row.suggestion }).then((result) => {
+				if (result.errors) {
+					res.status(500).send("Unable to fetch image");
+				} else {
+					res.json({ image: result.response.urls.full });
+				}
+			});
 		}
-		else {
-			res.send(result.response.urls.full)
-			//res.send();
-		}
-	});
-})
+	);
+});
 
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
