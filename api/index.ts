@@ -135,6 +135,7 @@ app.get("/image", (req: Request, res: Response) => {
 				if (result.errors) {
 					res.status(500).send("Unable to fetch image");
 				} else {
+					// @ts-ignore
 					res.json({ image: result.response.urls.full });
 				}
 			});
