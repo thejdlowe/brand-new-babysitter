@@ -17,6 +17,12 @@ export const improvBotApi = createApi({
 				url: "suggestion",
 			}),
 		}),
+		getImage: builder.query<string[], void>({
+			query: () => ({
+				method: "GET",
+				url: "image",
+			}),
+		}),
 		sendSuggestion: builder.mutation<string, string>({
 			query: (text) => ({
 				url: "suggestion",
@@ -29,8 +35,11 @@ export const improvBotApi = createApi({
 	}),
 });
 
-export const { useGetSuggestionsQuery, useSendSuggestionMutation } =
-	improvBotApi;
+export const {
+	useGetSuggestionsQuery,
+	useGetImageQuery,
+	useSendSuggestionMutation,
+} = improvBotApi;
 
 export const store = configureStore({
 	reducer: {
