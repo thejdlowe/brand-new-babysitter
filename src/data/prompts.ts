@@ -30,6 +30,7 @@ export const prompts: string[] = [
 	`Speak in only three word sentences.`,
 	`Everyone is suddenly filled with the emotion: $emotion.`,
 	`Style change: Continue the scene in the style of $style.`,
+	`Style change: Continue the scene as if it were broadcast on the TV channel $channel.`,
 	`You may only speak when touching another cast member.`,
 	`One of the cast members is here from the future, reveal them`,
 	`One of the cast members knows a secret about one of the others. Reveal it.`,
@@ -41,8 +42,19 @@ export const prompts: string[] = [
 	`One of the cast members shares a childhood story. What's the story?`,
 	`One of the cast members has a hidden motive. Reveal it.`,
 	`For the rest of the scene, talk like pirates.`,
+	`For the rest of the scene, talk in a surfer acent.`,
 	`For the rest of the scene, talk in a high falsetto.`,
 	`Time warp: Continue this scene $timeWarp in $pastOrFuture.`,
+];
+
+export const channels: string[] = [
+	"CNN",
+	"Sci Fi",
+	"Telemundo",
+	"The Weather Channel",
+	"MTV",
+	"The Hallmark Channel",
+	"C Span",
 ];
 
 export const timeWarps: string[] = [
