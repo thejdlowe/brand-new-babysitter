@@ -15,6 +15,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS suggestions (
 
 dotenv.config();
 
+//https://api.dictionaryapi.dev/api/v2/entries/en/temperature
+
 // this example uses axios and form-data
 const axios = require("axios");
 const FormData = require("form-data");
