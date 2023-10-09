@@ -29,17 +29,16 @@ export const AudienceFacing: FC = () => {
 	};
 	return (
 		<Typography variant="h5">
-			Want to submit something for the show you're watching? Fill this in
-			(Maximum 100 characters, keep it PG-13):
+			Want to submit a word for the show you're watching? Fill this in (Keep it
+			PG-13):
 			<br />
 			<TextField
 				disabled={isLoading}
 				label="Suggestion"
 				value={suggestion}
 				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-					setSuggestion(event.target.value);
+					setSuggestion(event.target.value.replaceAll(" ", ""));
 				}}
-				inputProps={{ maxLength: 100 }}
 			/>
 			<Button
 				onClick={() => {

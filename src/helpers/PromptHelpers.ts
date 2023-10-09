@@ -44,5 +44,5 @@ export const GetRandomPrompt = (): string => {
 export const getRandomFromArrPrompts = (arr: string[]) => {
 	let ret = arr[Math.floor(Math.random() * arr.length)];
 
-	return ret;
+	return [ret].join("");
 };

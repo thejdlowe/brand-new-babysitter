@@ -41,53 +41,67 @@ const suggestions: string[] = [];
 
 app.post("/suggestion", (req: Request, res: Response) => {
 	try {
-		const data = new FormData();
 		const suggestion = req.body.suggestion;
-		data.append("text", suggestion);
-		data.append("lang", "en");
-		data.append("mode", "ml");
-		data.append("api_user", `${process.env.SIGHTENGINE_USER}`);
-		data.append("api_secret", `${process.env.SIGHTENGINE_SECRET}`);
-
 		axios({
-			url: "https://api.sightengine.com/1.0/text/check.json",
-			method: "post",
-			data: data,
-			headers: data.getHeaders(),
+			url: `https://api.dictionaryapi.dev/api/v2/entries/en/${suggestion}`,
+			method: "GET",
 		})
-			.then(function (response: any) {
-				const data = response.data;
-				if (data.moderation_classes) {
-					const keys = data.moderation_classes.available;
-					let good = true;
-					let message: string[] = [];
-					keys.forEach((key: string) => {
-						if (
-							data.moderation_classes[key] &&
-							data.moderation_classes[key] >= 0.5
-						) {
-							message.push(`Invalid due to being too ${key}`);
-							good = false;
-						}
-					});
-					if (good === true) {
-						db.run(
-							`INSERT INTO suggestions(suggestion) VALUES(?)`,
-							[suggestion],
-							(err: any) => {
-								if (err) {
-									console.log(err);
-									throw { message: "Unable to add suggestion to database" };
+			.then(() => {
+				const formData = new FormData();
+
+				formData.append("text", suggestion);
+				formData.append("lang", "en");
+				formData.append("mode", "ml");
+				formData.append("api_user", `${process.env.SIGHTENGINE_USER}`);
+				formData.append("api_secret", `${process.env.SIGHTENGINE_SECRET}`);
+
+				axios({
+					url: "https://api.sightengine.com/1.0/text/check.json",
+					method: "post",
+					data: formData,
+					headers: formData.getHeaders(),
+				})
+					.then(function (response: any) {
+						const data = response.data;
+						console.log({ data });
+						if (data.moderation_classes) {
+							const keys = data.moderation_classes.available;
+							let good = true;
+							let message: string[] = [];
+							keys.forEach((key: string) => {
+								if (
+									data.moderation_classes[key] &&
+									data.moderation_classes[key] >= 0.5
+								) {
+									message.push(`Invalid due to being too ${key}`);
+									good = false;
 								}
-								res.send(response.data);
+							});
+							if (good === true) {
+								db.run(
+									`INSERT INTO suggestions(suggestion) VALUES(?)`,
+									[suggestion],
+									(err: any) => {
+										if (err) {
+											console.log(err);
+											throw { message: "Unable to add suggestion to database" };
+										}
+										res.send(response.data);
+										return;
+									}
+								);
 								return;
 							}
-						);
-						return;
-					}
-					throw { message: message.join(", ") };
-				}
-				throw { message: "Unable to validate suggestion" };
+							throw { message: message.join(", ") };
+						}
+						throw { message: "Unable to validate suggestion" };
+					})
+					.catch(function (error: any) {
+						// handle error
+						if (error.response) console.log(error.response.data);
+						else console.log(error.message);
+						res.status(500).send(error.message);
+					});
 			})
 			.catch(function (error: any) {
 				// handle error
